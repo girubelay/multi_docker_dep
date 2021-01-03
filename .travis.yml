@@ -7,15 +7,15 @@ before _install:
   - docker build - t gbelaydocker/react-test -f ./client/Dockerfile.dev ./client
 script:
   - docker run -e CI=true gbelaydocker/react-test npm test -- --coverage
-after_success: 
-  docker build -t gbelaydocker/multi-client ./client
-  docker build -t gbelaydocker/multi-nginx ./nginx
-  docker build -t gbelaydocker/multi-server ./server
-  docker build -t gbelaydocker/multi-worker ./worker
-#Login in to Docker CLI
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-#Take those Images and push them to docker
-- docker push gbelaydocker/multi-client
-- docker push gbelaydocker/multi-nginx
-- docker push gbelaydocker/multi-server
-- docker push gbelaydocker/multi-worker
+
+after_success:
+  - docker build -t gbelaydocker/multi-client ./client
+  - docker build -t gbelaydocker/multi-nginx ./nginx
+  - docker build -t gbelaydocker/multi-server ./server
+  - docker build -t gbelaydocker/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push gbelaydocker/multi-client
+  - docker push gbelaydocker/multi-nginx
+  - docker push gbelaydocker/multi-server
+  - docker push gbelaydocker/multi-worker
